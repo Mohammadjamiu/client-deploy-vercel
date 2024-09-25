@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
-import { ToggleLeft, ToggleRight } from 'lucide-react'
-import Navbar from './Components/Navbar';
-import HomePage from './pages/HomePage';
-import HouseSavings from './pages/HouseSavings';
-import CarSavings from './pages/CarSavings';
-import SaveForSomethingElse from './pages/SaveForSomethingElse';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./Components/Navbar";
+import CreateSavingsHomepage from "./pages/CreateSavingsHomepage";
+import Footer from "./Components/Footer";
+import CreateSavingsForSomethingElse from "./pages/CreateSavingsForSomethingElse";
+import SavingsTargetCalculation from "./pages/SavingsTargetCalculation";
+import SavingsTracker from "./pages/SavingsTracker";
 
 const App = () => {
   const [theme, setTheme] = useState("light");
@@ -19,9 +18,11 @@ const App = () => {
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
+      document.body.classList.add("dark:bg-black");
       localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      document.body.classList.remove("dark:bg-black");
       localStorage.setItem("theme", "light");
     }
   }, [theme]);
@@ -31,32 +32,27 @@ const App = () => {
   };
 
   return (
-    <div className={`max-w-[600px] px-[20px]  h-full w-full m-auto pb-10 dark:bg-black`}>
-      <div className="fixed top-0 z-50 right-0 border-2 rounded-full p-2 mt-1 flex justify-center items-center bg-white dark:bg-amigo-black-200">
-        <button onClick={handleThemeSwitch}>
-          {theme === "dark" ? (
-            <ToggleRight className="text-white" />
-          ) : (
-            <ToggleLeft />
-          )}
-        </button>
-      </div>
-     <Router>
-      <Navbar />
-      <Routes>
-      <Route index element={<HomePage />} />
-      <Route path="/save-for-car" element={<CarSavings />} />
-      <Route path="/save-for-house" element={<HouseSavings />} />
-      <Route path="/save-for-something-else" element={<SaveForSomethingElse />} />
-          
+    <div className={`max-w-[500px] px-[20px]  h-full w-full m-auto pb-10 `}>
+      <div className="fixed top-0 z-50 right-0 p-2 mt-1 flex justify-center items-center"></div>
+      <Router>
+        <Navbar theme={theme} handleTheme={handleThemeSwitch} />
+        <Routes>
+          <Route path="/" element={<CreateSavingsHomepage />} />
 
-      
-      
-      </Routes>
-     </Router>
-      
+          <Route
+            path="/create-savings-target-for-something-else"
+            element={<CreateSavingsForSomethingElse />}
+          />
+          <Route
+            path="/savings-target-calculation"
+            element={<SavingsTargetCalculation />}
+          />
+          <Route path="/savings-tracker" element={<SavingsTracker />} />
+        </Routes>
+        <Footer theme={theme} />
+      </Router>
     </div>
-  )
-}
+  );
+};
 
 export default App;
